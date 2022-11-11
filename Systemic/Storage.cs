@@ -1,9 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Systemic.Items;
 
 namespace Systemic;
 
 public class Storage
 {
-    public List<Item> Items { get; set; }
-    public int Size { get; set; } = 32;
+    private int _maxCount;
+
+    public List<Item> Items { get; set; } = new();
+
+    public int MaxCount
+    {
+        get => _maxCount;
+        set => _maxCount = value;
+    }
+
+    public Storage(int size)
+    {
+        _maxCount = size;
+    }
 }
