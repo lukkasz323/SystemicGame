@@ -11,13 +11,12 @@ namespace Systemic;
 
 public class Systemic : Game
 {
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
 
     public SpriteBatch SpriteBatch { get; private set; }
-    public Dictionary<string, SpriteFont> Fonts { get; private set; }
-    public Dictionary<string, Texture2D> Textures { get; private set; }
-
-
+    public Dictionary<string, SpriteFont> Fonts = new();
+    public Dictionary<string, Texture2D> Textures = new();
+    public List<Rectangle> Buttons { get; } = new();
     public Player Player { get; } = new();
 
     public Systemic()
@@ -30,14 +29,11 @@ public class Systemic : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        Fonts = new();
-        Textures = new();
-
         _graphics.HardwareModeSwitch = false;
         //_graphics.IsFullScreen = true;
         _graphics.ApplyChanges();
 
-        Player.Inventory.Items.Add(new Wood());
+        Player.Inventory.AddItem(new Wood());
 
         base.Initialize();
     }
@@ -85,7 +81,7 @@ public class Systemic : Game
         // TODO: Add your drawing code here
         SpriteBatch.Begin();
 
-        Render.Inventory(this, Player.Inventory);
+        Drawing.DrawInventory(this);
 
         SpriteBatch.End();
 

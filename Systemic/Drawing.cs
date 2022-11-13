@@ -3,17 +3,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Systemic;
 
-public static class Render
+public static class Drawing
 {
-    public static void Inventory(Systemic game, Storage storage)
+    public static void DrawInventory(Systemic game)
     {
         SpriteBatch spriteBatch = game.SpriteBatch;
         SpriteFont font = game.Fonts["DefaultFont"];
         Texture2D backTexture = game.Textures["Border"];
+        Storage storage = game.Player.Inventory;
 
         string title = "Inventory";
         var titleLength = font.MeasureString(title).X;
         int tileSize = 64;
+        int itemSize = 48;
         int cols = 4;
         int rows = storage.MaxCount / cols;
         int remainder = storage.MaxCount % cols;
@@ -29,8 +31,8 @@ public static class Render
         {
             for (int x = 0; x < cols; x++)
             {
-                spriteBatch.Draw(backTexture, new Rectangle(offset.x + x * tileSize, offset.y + (y * tileSize), tileSize, tileSize), Color.White);
-                spriteBatch.Draw(storage.Items[0].GetTexture(game.Textures), new Rectangle(offset.x + x * tileSize, offset.y + (y * tileSize), tileSize, tileSize), Color.White);
+                spriteBatch.Draw(backTexture, new Rectangle(offset.x + (x * tileSize), offset.y + (y * tileSize), tileSize, tileSize), Color.White);
+                spriteBatch.Draw(storage.GetItem(0).GetTexture(game.Textures), new Rectangle((offset.x + 8) + (x * tileSize), (offset.y + 8) + (y * tileSize), itemSize, itemSize), Color.White);
             }
         }
         for (int x = 0; x < remainder; x++)

@@ -2,5 +2,5 @@
 
 public class Player
 {
-    public Storage Inventory { get; set; } = new(12);
+    public Storage Inventory { get; set; } = new(15);
 }
