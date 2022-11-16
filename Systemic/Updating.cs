@@ -9,7 +9,6 @@ public static class Updating
     {
         // Keyboard
         KeyboardState keyboard = Keyboard.GetState();
-
         
         if (keyboard.IsKeyDown(Keys.Escape))
             game.Exit();
@@ -25,12 +24,12 @@ public static class Updating
         }
         else
         {
-            if (keyboard.IsKeyUp(Keys.LeftAlt) && keyboard.IsKeyUp(Keys.Enter))
+            if (keyboard.IsKeyUp(Keys.LeftAlt) || keyboard.IsKeyUp(Keys.Enter))
             {
                 game.ActionIsLocked[InputAction.ToggleFullscreen] = false;
             }
         }
-
+        
         if (!game.ActionIsLocked[InputAction.Debug1])
         {
             if (keyboard.IsKeyDown(Keys.Space))

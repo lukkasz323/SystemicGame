@@ -12,7 +12,7 @@ public class Storage
     public int MaxCount
     {
         get => _maxCount;
-        set => _maxCount = Math.Clamp(value, 4, 32);
+        set => _maxCount = Math.Clamp(value, 4, 64);
     }
 
     public Item GetItem(int index) => _items[index];
