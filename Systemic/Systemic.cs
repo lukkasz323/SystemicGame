@@ -1,27 +1,24 @@
-﻿using Microsoft.Xna.Framework;
+﻿global using System;
+global using System.Collections.Generic;
+global using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using Systemic.Items;
 
 namespace Systemic;
 
 public class Systemic : Game
 {
-    private readonly GraphicsDeviceManager _graphics;
-
+    public GraphicsDeviceManager Graphics { get; private set; }
     public SpriteBatch SpriteBatch { get; private set; }
+    public Dictionary<InputAction, bool> ActionIsLocked = new();
     public Dictionary<string, SpriteFont> Fonts = new();
     public Dictionary<string, Texture2D> Textures = new();
-    public List<Rectangle> Buttons { get; } = new();
     public Player Player { get; } = new();
 
     public Systemic()
     {
-        _graphics = new(this);
+        Graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -29,11 +26,14 @@ public class Systemic : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        _graphics.HardwareModeSwitch = false;
-        //_graphics.IsFullScreen = true;
-        _graphics.ApplyChanges();
+        Graphics.HardwareModeSwitch = false;
+        Graphics.ApplyChanges();
 
-        Player.Inventory.AddItem(new Wood());
+        // Locked input actions
+        foreach (InputAction action in Enum.GetValues(typeof(InputAction)))
+        {
+            ActionIsLocked[action] = false;
+        }
 
         base.Initialize();
     }
@@ -45,7 +45,7 @@ public class Systemic : Game
         // TODO: use this.Content to load your game content
         var fontFilenames = new List<string>()
         {
-            "DefaultFont"
+            "Default"
         };
         var textureFilenames = new List<string>()
         {
@@ -66,10 +66,7 @@ public class Systemic : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
-        // TODO: Add your update logic here
+        Updating.HandleInputs(this);
 
         base.Update(gameTime);
     }
