@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using System.Threading.Tasks.Dataflow;
 using Systemic.Items;
 
 namespace Systemic;
@@ -9,54 +10,74 @@ public static class Updating
     {
         // Keyboard
         KeyboardState keyboard = Keyboard.GetState();
-        
-        if (keyboard.IsKeyDown(Keys.Escape))
-            game.Exit();
 
-        if (!game.ActionIsLocked[InputAction.ToggleFullscreen])
+        if (keyboard.IsKeyDown(Keys.Escape))
+        {
+            game.Exit();
+        }
+
+        InputAction action = InputAction.ToggleFullscreen;
+        if (!game.ActionIsLocked[action])
         {
             if (keyboard.IsKeyDown(Keys.LeftAlt) && keyboard.IsKeyDown(Keys.Enter))
             {
                 game.Graphics.ToggleFullScreen();
 
-                game.ActionIsLocked[InputAction.ToggleFullscreen] = true;
+                game.ActionIsLocked[action] = true;
             }
         }
         else
         {
             if (keyboard.IsKeyUp(Keys.LeftAlt) || keyboard.IsKeyUp(Keys.Enter))
             {
-                game.ActionIsLocked[InputAction.ToggleFullscreen] = false;
+                game.ActionIsLocked[action] = false;
             }
         }
-        
-        if (!game.ActionIsLocked[InputAction.Debug1])
+
+        action = InputAction.Debug1;
+        if (!game.ActionIsLocked[action])
         {
             if (keyboard.IsKeyDown(Keys.Space))
             {
                 game.Player.Storage.AddItem(new Wood());
 
-                game.ActionIsLocked[InputAction.Debug1] = true;
+                game.ActionIsLocked[action] = true;
             }
         }
         else
         {
             if (keyboard.IsKeyUp(Keys.Space))
             {
-                game.ActionIsLocked[InputAction.Debug1] = false;
+                game.ActionIsLocked[action] = false;
             }
         }
 
         // Mouse
         MouseState mouse = Mouse.GetState();
 
-        for (int i = 0; i < game.Player.Storage.MaxCount; i++)
+        action = InputAction.Click;
+        if (!game.ActionIsLocked[action])
         {
-            Rectangle button = game.Player.Storage.Buttons[i];
-
-            if (mouse.LeftButton == ButtonState.Pressed && button.Contains(mouse.Position))
+            if (mouse.LeftButton == ButtonState.Pressed)
             {
-                game.Player.Storage.RemoveItem(i);
+                for (int i = 0; i < game.Player.Storage.MaxCount; i++)
+                {
+                    Rectangle button = game.Player.Storage.Buttons[i];
+
+                    if (button.Contains(mouse.Position))
+                    {
+                        game.Player.Storage.RemoveItem(i);
+                    }
+                }
+
+                game.ActionIsLocked[action] = true;
+            }
+        }
+        else
+        {
+            if (mouse.LeftButton == ButtonState.Released)
+            {
+                game.ActionIsLocked[action] = false;
             }
         }
     }

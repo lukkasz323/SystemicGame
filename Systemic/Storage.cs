@@ -1,4 +1,7 @@
-﻿using Systemic.Items;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using Systemic.Items;
 
 namespace Systemic;
 
@@ -43,9 +46,26 @@ public class Storage
         }
 
         Buttons = new(MaxCount);
-        for (int i = 0; i < MaxCount; i++)
+        var offset = (x: 32, y: 32);
+        int tileSize = 64;
+        int colsMax = 4;
+        int rows = MaxCount / colsMax;
+        int remainder = MaxCount % colsMax;
+        //for (int i = 0; i < MaxCount; i++)
+        //{
+        //    Buttons.Add(new Rectangle(0, 0, 32, 32));
+        //}
+        for (int y = 0; y < rows + 1; y++)
         {
-            Buttons.Add(new Rectangle());
+            int cols = colsMax;
+            if (y == rows)
+            {
+                cols = remainder;
+            }
+            for (int x = 0; x < cols; x++)
+            {
+                Buttons.Add(new Rectangle(offset.x + (x * tileSize), offset.y + (y * tileSize), tileSize, tileSize));
+            }
         }
     }
 }

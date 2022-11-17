@@ -10,7 +10,6 @@ public static class Drawing
         SpriteFont font = game.Fonts["Default"];
         Texture2D backTexture = game.Textures["Border"];
 
-        var titleLength = font.MeasureString(title).X;
         int tileSize = 64;
         int itemSize = 48;
         int colsMax = 4;
@@ -19,6 +18,7 @@ public static class Drawing
         int invWidth = tileSize * colsMax;
 
         // Title
+        var titleLength = font.MeasureString(title).X;
         spriteBatch.Draw(backTexture, 
             new Rectangle(offset.x, offset.y - font.LineSpacing, invWidth, font.LineSpacing), Color.White);
         spriteBatch.DrawString(font, title, 
