@@ -78,7 +78,7 @@ public class Systemic : Game
         // TODO: Add your drawing code here
         SpriteBatch.Begin();
 
-        Drawing.DrawStorage(this, Player.Storage, "Inventory", (32, 32));
+        Drawing.DrawStorage(this, Player.Storage);
 
         SpriteBatch.End();
 

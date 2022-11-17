@@ -11,6 +11,8 @@ public class Storage
     private int _maxCount;
 
     public List<Rectangle> Buttons { get; private set; }
+    public string Title { get; } 
+    public (int x, int y) Position { get; } 
 
     public int MaxCount
     {
@@ -35,9 +37,11 @@ public class Storage
 
     public void RemoveItem(int index) => _items[index] = null;
 
-    public Storage(int size)
+    public Storage(int size, string title, (int x, int y) position)
     {
         MaxCount = size;
+        Title = title;
+        Position = position;
 
         _items = new(MaxCount);
         for (int i = 0; i < MaxCount; i++)
@@ -46,15 +50,10 @@ public class Storage
         }
 
         Buttons = new(MaxCount);
-        var offset = (x: 32, y: 32);
         int tileSize = 64;
         int colsMax = 4;
         int rows = MaxCount / colsMax;
         int remainder = MaxCount % colsMax;
-        //for (int i = 0; i < MaxCount; i++)
-        //{
-        //    Buttons.Add(new Rectangle(0, 0, 32, 32));
-        //}
         for (int y = 0; y < rows + 1; y++)
         {
             int cols = colsMax;
@@ -64,7 +63,7 @@ public class Storage
             }
             for (int x = 0; x < cols; x++)
             {
-                Buttons.Add(new Rectangle(offset.x + (x * tileSize), offset.y + (y * tileSize), tileSize, tileSize));
+                Buttons.Add(new Rectangle(Position.x + (x * tileSize), Position.y + (y * tileSize), tileSize, tileSize));
             }
         }
     }
